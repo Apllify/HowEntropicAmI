@@ -22,10 +22,10 @@ namespace HowEntropicAmI
 			@"!""#$%&'()*+,-./:;<=>?@[\]^_`{|}~";
 		#endregion
 
-		static readonly string[] AllAlphabets =
+		public static readonly string[] AllAlphabets =
 			 { Lowercase, Uppercase, Digits, Symbols };
 
-		static bool[] ActiveAlphabets;
+		public static bool[] ActiveAlphabets;
 
 
 		//return a concatenation of active alphabets

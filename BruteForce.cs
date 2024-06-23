@@ -8,6 +8,7 @@ namespace HowEntropicAmI
 {
 	public static class BruteForce
 	{
+		public static Dictionary<char, int> FreqDict;
 
 		/// <summary>
 		/// Computes the entropy of a password 
@@ -21,6 +22,28 @@ namespace HowEntropicAmI
 			return Math.Log2(posCount);
 		}
 
+
+		private static void BuildFreqDict(string filename)
+		{
+			//initialize dict with all 0s
+			Dictionary<char, int> freqDict = new Dictionary<char, int>(200);
+
+			for (int i = 0; i <  Config.AllAlphabets.Length; i++)
+			{
+				for (int j = 0; j < Config.AllAlphabets[i].Length; j++)
+				{
+					freqDict[Config.AllAlphabets[i][j]] = 0;
+				}
+			}
+
+			//read all chars from file 
+
+
+			//write to public freq dict
+			FreqDict = freqDict;
+
+
+		}
 
 		/// <summary>
 		/// Computes the entropy of a password 
