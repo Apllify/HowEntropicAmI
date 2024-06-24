@@ -34,6 +34,8 @@
 			bfTitleLabel = new Label();
 			bfEntropyLabel = new Label();
 			errorLabel = new Label();
+			cbfTitleLabel = new Label();
+			cbfEntropyLabel = new Label();
 			SuspendLayout();
 			// 
 			// titleLabel
@@ -102,11 +104,36 @@
 			errorLabel.TabIndex = 5;
 			errorLabel.TextAlign = ContentAlignment.MiddleCenter;
 			// 
+			// cbfTitleLabel
+			// 
+			cbfTitleLabel.Anchor = AnchorStyles.Bottom;
+			cbfTitleLabel.AutoSize = true;
+			cbfTitleLabel.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
+			cbfTitleLabel.Location = new Point(320, 235);
+			cbfTitleLabel.Name = "cbfTitleLabel";
+			cbfTitleLabel.Size = new Size(228, 35);
+			cbfTitleLabel.TabIndex = 6;
+			cbfTitleLabel.Text = "Clever Brute Force :";
+			// 
+			// cbfEntropyLabel
+			// 
+			cbfEntropyLabel.Anchor = AnchorStyles.Bottom;
+			cbfEntropyLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+			cbfEntropyLabel.ForeColor = SystemColors.GrayText;
+			cbfEntropyLabel.Location = new Point(338, 279);
+			cbfEntropyLabel.Name = "cbfEntropyLabel";
+			cbfEntropyLabel.Size = new Size(177, 71);
+			cbfEntropyLabel.TabIndex = 7;
+			cbfEntropyLabel.Text = "---";
+			cbfEntropyLabel.TextAlign = ContentAlignment.MiddleCenter;
+			// 
 			// MainForm
 			// 
 			AutoScaleDimensions = new SizeF(8F, 20F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(800, 505);
+			Controls.Add(cbfEntropyLabel);
+			Controls.Add(cbfTitleLabel);
 			Controls.Add(errorLabel);
 			Controls.Add(bfEntropyLabel);
 			Controls.Add(bfTitleLabel);
@@ -127,5 +154,7 @@
 		private Label bfTitleLabel;
 		private Label bfEntropyLabel;
 		private Label errorLabel;
+		private Label cbfTitleLabel;
+		private Label cbfEntropyLabel;
 	}
 }

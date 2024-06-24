@@ -9,7 +9,22 @@ namespace HowEntropicAmI
 		{
 			InitializeComponent();
 
+			//we become the error handler
+			Shown += (_, _) =>
+			{
+				Error.ErrorEvent += OnError;
+			};
+
+			Closing += (_, _) =>
+			{
+				Error.ErrorEvent -= OnError;
+			};
+
+			//run freq dict computation for CBF
+			BruteForce.BuildFreqDict(@"D:\Programmation\C#\HowEntropicAmI\HowEntropicAmI\rawdata\100k-most-used-passwords-NCSC.txt");
 		}
+
+
 
 		/// <summary>
 		/// Creates the end user message for an entropy amount
@@ -33,6 +48,18 @@ namespace HowEntropicAmI
 			errorLabel.ForeColor = Color.DarkRed;
 		}
 
+		private void OnError(Error.ErrorType type, string message)
+		{
+			if (type == Error.ErrorType.Error)
+			{
+				ShowError(message);
+			}
+			else if (type == Error.ErrorType.Warning)
+			{
+				ShowWarning(message);
+			}
+		}
+
 		private void passwordConfirmButton_Click(object sender, EventArgs e)
 		{
 			string pword = passwordInput.Text;
@@ -41,15 +68,18 @@ namespace HowEntropicAmI
 			bool pwordValid = Config.IsPwordValid(pword);
 			if (!pwordValid)
 			{
-				ShowError("password is not in specified character set");
+				Error.EmitError(Error.ErrorType.Error,
+								"password is not in specified character set");
 				return;
 			}
 
 			//run all the computation here
 			double bfEntropy = BruteForce.BFEntropy(pword);
+			double cbfEntropy = BruteForce.WeightedBFEntropy(pword);
 
 			//show results to the user
 			bfEntropyLabel.Text = entropyMessage(bfEntropy);
+			cbfEntropyLabel.Text = entropyMessage(cbfEntropy);
 
 		}
 	}
