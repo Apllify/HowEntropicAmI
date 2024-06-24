@@ -49,6 +49,19 @@ namespace HowEntropicAmI
 			}
 		}
 
+		public static int AlphabetSize
+		{
+			get
+			{
+				int size = 0;
+				for (int i = 0; i < AllAlphabets.Length; i++)
+				{
+					if (ActiveAlphabets[i]) size += AllAlphabets[i].Length;
+				}
+
+				return size;
+			}
+		}
 
 		static Config()
 		{
