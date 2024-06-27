@@ -13,6 +13,11 @@ namespace HowEntropicAmI
 			Shown += (_, _) =>
 			{
 				Error.ErrorEvent += OnError;
+				//check if error happened before us ?
+				if (Error.CurrentErr != "")
+				{
+					OnError(Error.CurrentErrType, Error.CurrentErr);
+				}
 			};
 
 			Closing += (_, _) =>
@@ -22,6 +27,9 @@ namespace HowEntropicAmI
 
 			//run freq dict computation for CBF
 			BruteForce.BuildFreqDict(@"D:\Programmation\C#\HowEntropicAmI\HowEntropicAmI\rawdata\100k-most-used-passwords-NCSC.txt");
+
+
+
 		}
 
 
@@ -64,22 +72,29 @@ namespace HowEntropicAmI
 		{
 			string pword = passwordInput.Text;
 
-			//check password validity
+			//restrict our alphabet to match
+			Config.RestrictAlphabet(pword);
+
+			//check for illegal characters
 			bool pwordValid = Config.IsPwordValid(pword);
 			if (!pwordValid)
 			{
 				Error.EmitError(Error.ErrorType.Error,
-								"password is not in specified character set");
+								"password contains illegal characters");
 				return;
 			}
 
 			//run all the computation here
 			double bfEntropy = BruteForce.BFEntropy(pword);
 			double cbfEntropy = BruteForce.WeightedBFEntropy(pword);
+			double daEntropy = DictionaryAttack.ImpersonalEntropy(pword);
+			double idaEntropy = DictionaryAttack.PersonalEntropy(pword);
 
 			//show results to the user
 			bfEntropyLabel.Text = entropyMessage(bfEntropy);
 			cbfEntropyLabel.Text = entropyMessage(cbfEntropy);
+			daEntropyLabel.Text = entropyMessage(daEntropy);
+			idaEntropyLabel.Text = entropyMessage(idaEntropy);
 
 		}
 	}
