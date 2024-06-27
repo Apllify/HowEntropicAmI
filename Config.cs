@@ -89,5 +89,30 @@ namespace HowEntropicAmI
 			return true;
 		}
 
+
+		/// <summary>
+		/// Changes ActiveAlphabets to be the smallest alphabet
+		/// containing our password
+		/// </summary>
+		public static void RestrictAlphabet(string pword)
+		{
+
+			//set all to false
+			ActiveAlphabets = new bool[AllAlphabets.Length];
+
+			//only toggles alphabets where at least one char belongs
+			//assumes alphabets don't overlap
+			foreach (char c in pword)
+			{
+				for (int i = 0; i < AllAlphabets.Length; i++)
+				{
+					if (AllAlphabets[i].Contains(c))
+					{
+						ActiveAlphabets[i] = true;
+						break;
+					}
+				}
+			}
+		}
 	}
 }

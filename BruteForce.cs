@@ -46,7 +46,6 @@ namespace HowEntropicAmI
 			//read all chars from file 
 			try
 			{
-				Debug.WriteLine(filename);
 				FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
 				using (StreamReader reader = new StreamReader(fs))
 				{
