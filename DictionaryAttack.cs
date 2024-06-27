@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -9,8 +10,8 @@ namespace HowEntropicAmI
 {
 	public static class DictionaryAttack
 	{
-		private static HashSet<string> impersonalTokens = new();
-		private static HashSet<string> personalTokens = new();
+		public static HashSet<string> impersonalTokens = new();
+		public static HashSet<string> personalTokens = new();
 
 
 		/// <summary>
@@ -19,8 +20,8 @@ namespace HowEntropicAmI
 		/// </summary>
 		private static HashSet<string> getAlphabetTokens()
 		{
-			//append every current alphabet 
-			HashSet<string> alphabetTokens = new();
+			//append every current alphabet char
+			HashSet<string> alphabetTokens = new(Config.AlphabetSize);
 			for (int i = 0; i < Config.AllAlphabets.Length; i++)
 			{
 				if (Config.ActiveAlphabets[i]) 
@@ -49,7 +50,7 @@ namespace HowEntropicAmI
 				if (word.StartsWith(token))
 				{
 					if (bestLen == -1 ||
-						token.Length < bestLen)
+						token.Length > bestLen)
 					{
 						bestLen = token.Length;
 						bestToken = token;
@@ -58,6 +59,38 @@ namespace HowEntropicAmI
 			}
 
 			return (bestLen, bestToken);
+		}
+
+
+
+		/// <summary>
+		/// Tokenize the input string with longest match selection
+		/// </summary>
+		private static List<string> parseString(string word, HashSet<string> tokens)
+		{
+			List<string> parsed = new();
+			int curIndex = 0;
+
+			while (curIndex < word.Length)
+			{
+				//get current match
+				(int matchLen, string match) = consumeToken(word.Substring(curIndex), tokens); 
+
+				//handle case where token list is does not span all possible words
+				if (matchLen == -1)
+				{
+					Error.EmitError(Error.ErrorType.Error, "could not tokenize password");
+					return new List<string>();
+				}
+
+				//add our match and move on
+				parsed.Add(match);
+				curIndex += matchLen;
+
+			}
+
+			return parsed;
+
 		}
 
 		public static double ImpersonalEntropy(string password)
