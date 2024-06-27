@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -10,8 +11,8 @@ namespace HowEntropicAmI
 {
 	public static class DictionaryAttack
 	{
-		public static HashSet<string> impersonalTokens = new();
-		public static HashSet<string> personalTokens = new();
+		public static HashSet<string> ImpersonalTokens = new();
+		public static HashSet<string> PersonalTokens = new();
 
 
 		/// <summary>
@@ -26,9 +27,13 @@ namespace HowEntropicAmI
 			{
 				if (Config.ActiveAlphabets[i]) 
 				{
-					alphabetTokens.Append(Config.AllAlphabets[i]);
+					for (int j = 0; j < Config.AllAlphabets[i].Length; j++)
+					{
+						alphabetTokens.Add(Config.AllAlphabets[i][j].ToString());
+					}
 				}
 			}
+
 
 			return alphabetTokens;
 		}
@@ -62,11 +67,10 @@ namespace HowEntropicAmI
 		}
 
 
-
 		/// <summary>
 		/// Tokenize the input string with longest match selection
 		/// </summary>
-		private static List<string> parseString(string word, HashSet<string> tokens)
+		private static List<string> tokenize(string word, HashSet<string> tokens)
 		{
 			List<string> parsed = new();
 			int curIndex = 0;
@@ -93,18 +97,52 @@ namespace HowEntropicAmI
 
 		}
 
+
+		/// <summary>
+		/// Returns common variations of the input word
+		/// </summary>
+		private static HashSet<string> wordVariants(string word)
+		{
+			
+			string baseWord = word.ToLower();
+			HashSet<string> variants = new(3);
+			
+			//enumerate the variants here
+			variants.Add(baseWord);
+			variants.Add(baseWord.ToUpper());
+			variants.Add(new CultureInfo("en-US").TextInfo.ToTitleCase(baseWord));
+
+			return variants;
+		}
+
+		/// <summary>
+		/// Retrieves the impersonal tokens list from a file.
+		/// 1 line = 1 token.
+		/// </summary>
+		public static void BuildImpersonalTokens(string filename)
+		{
+
+		}
+
 		public static double ImpersonalEntropy(string password)
 		{
-			HashSet<string> tokens = new(getAlphabetTokens().Union(impersonalTokens));
+			HashSet<string> tokens = new(getAlphabetTokens().Union(ImpersonalTokens));
+			List<string> lexedPassword = tokenize(password, tokens);
 
-			return 0;
+			double posCount = Math.Pow(tokens.Count, lexedPassword.Count);
+
+			return Math.Log2(posCount);
 		}
+
 
 		public static double PersonalEntropy(string password)
 		{
-			HashSet<string> tokens = new(getAlphabetTokens().Union(personalTokens));
+			HashSet<string> tokens = new(getAlphabetTokens().Union(PersonalTokens));
+			List<string> lexedPassword = tokenize(password, tokens);
 
-			return 0;
+			double posCount = Math.Pow(tokens.Count, lexedPassword.Count);
+
+			return Math.Log2(posCount);
 		}
 	}
 }
