@@ -27,7 +27,7 @@ namespace HowEntropicAmI
 
 			//run freq dict computation for CBF
 			BruteForce.BuildFreqDict(@"D:\Programmation\C#\HowEntropicAmI\HowEntropicAmI\rawdata\100k-most-used-passwords-NCSC.txt");
-
+			DictionaryAttack.BuildImpersonalTokens(@"D:\Programmation\C#\HowEntropicAmI\HowEntropicAmI\rawdata\common-words.txt");
 
 
 		}
@@ -95,6 +95,10 @@ namespace HowEntropicAmI
 			cbfEntropyLabel.Text = entropyMessage(cbfEntropy);
 			daEntropyLabel.Text = entropyMessage(daEntropy);
 			idaEntropyLabel.Text = entropyMessage(idaEntropy);
+
+			//display the worst case
+			double worstEntropy = new double[] { bfEntropy, cbfEntropy, daEntropy, idaEntropy }.Min();
+			worstCaseCountLabel.Text = entropyMessage(worstEntropy);
 
 		}
 	}

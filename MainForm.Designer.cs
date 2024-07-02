@@ -43,6 +43,8 @@
 			idaTitleLabel = new Label();
 			idaEntropyLabel = new Label();
 			idaCustomizeButton = new Button();
+			worstCaseTitleLabel = new Label();
+			worstCaseCountLabel = new Label();
 			SuspendLayout();
 			// 
 			// titleLabel
@@ -192,11 +194,37 @@
 			idaCustomizeButton.Text = "Customize";
 			idaCustomizeButton.UseVisualStyleBackColor = true;
 			// 
+			// worstCaseTitleLabel
+			// 
+			worstCaseTitleLabel.Anchor = AnchorStyles.Bottom;
+			worstCaseTitleLabel.AutoSize = true;
+			worstCaseTitleLabel.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
+			worstCaseTitleLabel.Location = new Point(207, 466);
+			worstCaseTitleLabel.Name = "worstCaseTitleLabel";
+			worstCaseTitleLabel.Size = new Size(301, 35);
+			worstCaseTitleLabel.TabIndex = 13;
+			worstCaseTitleLabel.Text = "Your worst case entropy : ";
+			worstCaseTitleLabel.TextAlign = ContentAlignment.MiddleCenter;
+			// 
+			// worstCaseCountLabel
+			// 
+			worstCaseCountLabel.Anchor = AnchorStyles.Bottom;
+			worstCaseCountLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+			worstCaseCountLabel.ForeColor = Color.Red;
+			worstCaseCountLabel.Location = new Point(532, 450);
+			worstCaseCountLabel.Name = "worstCaseCountLabel";
+			worstCaseCountLabel.Size = new Size(206, 71);
+			worstCaseCountLabel.TabIndex = 14;
+			worstCaseCountLabel.Text = "---";
+			worstCaseCountLabel.TextAlign = ContentAlignment.MiddleCenter;
+			// 
 			// MainForm
 			// 
 			AutoScaleDimensions = new SizeF(8F, 20F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(1017, 570);
+			Controls.Add(worstCaseCountLabel);
+			Controls.Add(worstCaseTitleLabel);
 			Controls.Add(idaCustomizeButton);
 			Controls.Add(idaEntropyLabel);
 			Controls.Add(idaTitleLabel);
@@ -232,5 +260,7 @@
 		private Label idaTitleLabel;
 		private Label idaEntropyLabel;
 		private Button idaCustomizeButton;
+		private Label worstCaseTitleLabel;
+		private Label worstCaseCountLabel;
 	}
 }
