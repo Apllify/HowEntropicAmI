@@ -107,7 +107,7 @@ namespace HowEntropicAmI
 			string baseWord = word.ToLower();
 			HashSet<string> variants = new(3);
 			
-			//enumerate the variants here
+			//capitalization variants here
 			variants.Add(baseWord);
 			variants.Add(baseWord.ToUpper());
 			variants.Add(new CultureInfo("en-US").TextInfo.ToTitleCase(baseWord));
@@ -121,14 +121,39 @@ namespace HowEntropicAmI
 		/// </summary>
 		public static void BuildImpersonalTokens(string filename)
 		{
+			ImpersonalTokens.Clear();
 
+			//read all words from file 
+			try
+			{
+				FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
+				using (StreamReader reader = new StreamReader(fs))
+				{
+					while (!reader.EndOfStream)
+					{
+						string newWord = reader.ReadLine();
+						if (newWord != "")
+						{
+							ImpersonalTokens.UnionWith(wordVariants(newWord));
+						}
+					}
+				}
+			}
+			catch
+			{
+				Error.EmitError(Error.ErrorType.Error, "could not load impersonal tokens");
+			}
 		}
 
 		public static double ImpersonalEntropy(string password)
 		{
-			HashSet<string> tokens = new(getAlphabetTokens().Union(ImpersonalTokens));
+			HashSet<string> tokens = new HashSet<string>(ImpersonalTokens.Count +
+														 Config.AlphabetSize);
+			tokens.UnionWith(ImpersonalTokens);
+			tokens.UnionWith(getAlphabetTokens()); 
+			
 			List<string> lexedPassword = tokenize(password, tokens);
-
+			
 			double posCount = Math.Pow(tokens.Count, lexedPassword.Count);
 
 			return Math.Log2(posCount);
@@ -137,7 +162,13 @@ namespace HowEntropicAmI
 
 		public static double PersonalEntropy(string password)
 		{
-			HashSet<string> tokens = new(getAlphabetTokens().Union(PersonalTokens));
+			HashSet<string> tokens = new HashSet<string>(ImpersonalTokens.Count + 
+														 PersonalTokens.Count + 
+														 Config.AlphabetSize);
+			tokens.UnionWith(ImpersonalTokens);
+			tokens.UnionWith(PersonalTokens);
+			tokens.UnionWith(getAlphabetTokens());
+
 			List<string> lexedPassword = tokenize(password, tokens);
 
 			double posCount = Math.Pow(tokens.Count, lexedPassword.Count);
