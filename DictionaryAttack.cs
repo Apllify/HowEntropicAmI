@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HowEntropicAmI.Forms;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -12,7 +13,6 @@ namespace HowEntropicAmI
 	public static class DictionaryAttack
 	{
 		public static HashSet<string> ImpersonalTokens = new();
-		public static HashSet<string> PersonalTokens = new();
 
 
 		/// <summary>
@@ -105,7 +105,7 @@ namespace HowEntropicAmI
 		{
 			
 			string baseWord = word.ToLower();
-			HashSet<string> variants = new(3);
+			HashSet<string> variants = new(3);   
 			
 			//capitalization variants here
 			variants.Add(baseWord);
@@ -152,6 +152,8 @@ namespace HowEntropicAmI
 			tokens.UnionWith(ImpersonalTokens);
 			tokens.UnionWith(getAlphabetTokens()); 
 			
+
+
 			List<string> lexedPassword = tokenize(password, tokens);
 			
 			double posCount = Math.Pow(tokens.Count, lexedPassword.Count);
@@ -162,12 +164,27 @@ namespace HowEntropicAmI
 
 		public static double PersonalEntropy(string password)
 		{
+			// add the boilerplate tokens
 			HashSet<string> tokens = new HashSet<string>(ImpersonalTokens.Count + 
-														 PersonalTokens.Count + 
 														 Config.AlphabetSize);
 			tokens.UnionWith(ImpersonalTokens);
-			tokens.UnionWith(PersonalTokens);
 			tokens.UnionWith(getAlphabetTokens());
+
+			// add the personal tokens
+			foreach (string personalString in QuestionForm.inputValues)
+			{
+				if (personalString == null || personalString == "")
+				{
+					continue;
+				}
+
+				foreach (string personalWord in personalString.Split(" "))
+				{
+					tokens.UnionWith(wordVariants(personalWord));
+				}
+
+			}
+
 
 			List<string> lexedPassword = tokenize(password, tokens);
 
