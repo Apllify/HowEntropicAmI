@@ -1,3 +1,5 @@
+using HowEntropicAmI.Forms;
+
 namespace HowEntropicAmI
 {
 	internal static class Program
