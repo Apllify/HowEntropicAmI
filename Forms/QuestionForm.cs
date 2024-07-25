@@ -26,7 +26,7 @@ namespace HowEntropicAmI.Forms
 			("questionInput5", "email"),
 			("questionInput6", "text"),
 			("questionInput7", "text"),
-			("questionInput8", "text"),
+			("questionInput8", "date"),
 			("questionInput9", "text"),
 		};
 
@@ -84,11 +84,11 @@ namespace HowEntropicAmI.Forms
 		public static void SaveData()
 		{
 			// generate the data dictionary
-			Dictionary<string, string> saveData = new Dictionary<string, string>(inputs.Length);	
+			Dictionary<string, string> saveData = new Dictionary<string, string>(inputs.Length);
 			for (int i = 0; i < inputs.Length; i++)
 			{
 				saveData[inputs[i].Item1] = inputValues[i];
- 			}
+			}
 
 			// now serialize it 
 			string serialized = JsonSerializer.Serialize<Dictionary<string, string>>(saveData);
@@ -111,7 +111,7 @@ namespace HowEntropicAmI.Forms
 					serialized = stream.ReadToEnd();
 				}
 			}
-			catch(FileNotFoundException)
+			catch (FileNotFoundException)
 			{
 				//file likely does not exist
 				return;

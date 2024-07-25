@@ -197,7 +197,7 @@
 			questionLabel7.RightToLeft = RightToLeft.No;
 			questionLabel7.Size = new Size(229, 46);
 			questionLabel7.TabIndex = 13;
-			questionLabel7.Text = "What is your full name (separated by spaces) ?";
+			questionLabel7.Text = "What are your main online usernames ?";
 			questionLabel7.TextAlign = ContentAlignment.MiddleCenter;
 			questionLabel7.UseMnemonic = false;
 			// 
@@ -217,7 +217,7 @@
 			questionLabel8.RightToLeft = RightToLeft.No;
 			questionLabel8.Size = new Size(229, 46);
 			questionLabel8.TabIndex = 15;
-			questionLabel8.Text = "What is your full name (separated by spaces) ?";
+			questionLabel8.Text = "Feel free to add any extra relevant dates here :";
 			questionLabel8.TextAlign = ContentAlignment.MiddleCenter;
 			questionLabel8.UseMnemonic = false;
 			// 
