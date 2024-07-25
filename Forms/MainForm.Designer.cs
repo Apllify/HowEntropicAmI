@@ -241,6 +241,7 @@
 			Controls.Add(titleLabel);
 			Name = "MainForm";
 			Text = "How Entropic Am I ?";
+			FormClosed += MainForm_FormClosed;
 			ResumeLayout(false);
 			PerformLayout();
 		}

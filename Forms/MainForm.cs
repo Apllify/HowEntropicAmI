@@ -110,5 +110,11 @@ namespace HowEntropicAmI.Forms
 			qForm.ShowDialog();
 
 		}
+
+		private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+		{
+			//serialize the data from question form
+			QuestionForm.SaveData();
+		}
 	}
 }
