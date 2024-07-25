@@ -1,3 +1,3 @@
-﻿ - Make dictionary attack more pessimistic (add more variants, but only compute entropy based on size of vanilla word list)
+﻿ - Add a "judgement" for resultign entropy value (anything below 60 should probably be bad/eh)
  - Bonus : Add support for more complex characters (e.g. accetnts, emojis, etc..)
  
