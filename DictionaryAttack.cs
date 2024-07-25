@@ -4,8 +4,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Net.Mail;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace HowEntropicAmI
@@ -115,6 +119,66 @@ namespace HowEntropicAmI
 			return variants;
 		}
 
+
+		/// <summary>
+		/// Returns useful keyword variants from an email
+		/// </summary>
+		private static HashSet<string> emailVariants(string email)
+		{
+			//test if truly an email 
+			MailAddress typedEmail;
+			try
+			{
+				typedEmail = new MailAddress(email);
+			}
+			catch (FormatException e)
+			{
+				return new HashSet<string>();
+			}
+
+
+			//if so, return variants of the email username
+			return wordVariants(typedEmail.User);
+		}
+
+		/// <summary>
+		/// Returns useful keyword variants from a date
+		/// </summary>
+		private static HashSet<string> dateVariants(string date)
+		{
+			//test if truly a date 
+			DateTime typedDate;
+			try
+			{
+				typedDate = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+			}
+			catch (FormatException e)
+			{
+				return new HashSet<string>();
+			}
+
+			
+			HashSet<string> variants = new HashSet<string>();
+
+
+			//get variants on month NAME
+			variants.UnionWith(wordVariants(typedDate.ToString("MMM")));
+			variants.UnionWith(wordVariants(typedDate.ToString("MMMM")));
+
+			//get invididual components of the date
+			variants.Add(typedDate.ToString("dd"));
+			variants.Add(typedDate.ToString("MM"));
+			variants.Add(typedDate.ToString("yyyy"));
+
+			//get full date in us and european format
+			variants.Add(typedDate.ToString("dd/MM/yyyy"));
+			variants.Add(typedDate.ToString("MM/dd/yyyy"));
+
+			return variants;
+
+
+		}
+
 		/// <summary>
 		/// Retrieves the impersonal tokens list from a file.
 		/// 1 line = 1 token.
@@ -170,17 +234,25 @@ namespace HowEntropicAmI
 			tokens.UnionWith(ImpersonalTokens);
 			tokens.UnionWith(getAlphabetTokens());
 
-			// add the personal tokens
-			foreach (string personalString in QuestionForm.inputValues)
+			// add the personal tokens wrt their types
+			for (int i = 0; i < QuestionForm.inputs.Length; i++) 
 			{
-				if (personalString == null || personalString == "")
+				string inputType = QuestionForm.inputs[i].Item2;
+				string inputValue = QuestionForm.inputValues[i];
+
+				if (inputValue == null || inputValue == "")
 				{
 					continue;
 				}
 
-				foreach (string personalWord in personalString.Split(" "))
+				foreach (string personalWord in inputValue.Split(" "))
 				{
-					tokens.UnionWith(wordVariants(personalWord));
+					if (inputType == "text")
+						tokens.UnionWith(wordVariants(personalWord));
+					else if (inputType == "email")
+						tokens.UnionWith(emailVariants(personalWord));
+					else if (inputType == "date")
+						tokens.UnionWith(dateVariants(personalWord));
 				}
 
 			}
