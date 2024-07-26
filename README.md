@@ -2,14 +2,14 @@
 
 This is a short project designed to show people 
 how safe their passwords (or password ideas) are 
-through the metric of information entropy. 
+through the metric of [information entropy](https://en.wikipedia.org/wiki/Entropy_(information_theory)).
 
-This is a hobby project for illustrative purposes and, as such, 
+This is a hobby application meant for illustrative purposes and, as such, 
 the entropy amounts may not be perfectly computed. A more 
 reliable source (like the KeePassXC application) should be used 
-for important tests.
+as a double check for important tests.
 
-DISCLAIMER : This application does NOT connect to the internet,
+DISCLAIMER : This application does **not** connect to the internet,
 and in no way shares any information entered. Still, you probably
 shouldn't put your real passwords in as a matter of general opsec.
 
@@ -19,12 +19,16 @@ Entropy is a measure of how hard a given password
 is to guess. "Guessing" here can refer to a range of methods from brute force
 to more intelligent approaches.
 
-Simply put, the higher the entropy, the more secure the password.
+In other words, the higher the entropy, the more secure the password.
 
-While there is no exact consensus, it's generally accepted that a good account 
-password should have at least ~30 bits of entropy. For an important or high stakes 
-password, that threshold is set much higher at around 80 bits of entropy. 
-
+The [Keepass Help Center](https://keepass.info/help/kb/pw_quality_est.html) website provides the following chart for the relationship between password entropy and "quality" : 
+| **Bits** | **Strength** |
+|----------|--------------|
+| 0-64     | Very weak    |
+| 64-80    | Weak         |
+| 80-112   | Good         |
+| 112-128  | Strong       |
+| ≥ 128    | Very strong  |
 
 [comment]: <>  (# How is it computed ? )
 
