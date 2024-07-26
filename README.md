@@ -30,5 +30,12 @@ The [Keepass Help Center](https://keepass.info/help/kb/pw_quality_est.html) webs
 | 112-128  | Strong       |
 | ≥ 128    | Very strong  |
 
-[comment]: <>  (# How is it computed ? )
+# How does it work ?
+Simply enter your password, and click run to see your entropy with respect to some of the main password-cracking methods. 
 
+
+You can also answer some personal questions in the "Customize" tab to see how hackers can use specific knowledge against you.
+
+<p align="center">
+  <img src="showcase.gif" alt="animated" />
+</p>
